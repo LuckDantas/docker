@@ -8,17 +8,14 @@
       - 8096:8096/tcp
       #- 7359:7359/udp
     volumes:
-      - /opt/stacks/jellyfin/config:/config
-      - /opt/stacks/jellyfin/cache:/cache
-      - type: bind
-        source: /media/luckdantas/Novo volume/Movie/
-        target: /media1
-      - type: bind
-        source: /media/luckdantas/Jellyfin1/Series/
-        target: /media2
-        read_only: true
+      #- /opt/stacks/jellyfin/config:/config
+      #- /opt/stacks/jellyfin/cache:/cache
+      - ./jellyfin-config:/config
+      - ./jellyfin-cache:/cache
+      - ${MEDIA_LOCATION}:/media
     restart: 'unless-stopped'
     # Optional - alternative address used for autodiscovery
     environment:
+      - TZ=${TIMEZONE}
       - /dev/dri:/dev/dri
     # Optional - may be necessary for docker healthcheck to pass if running in host network mode
