@@ -1,0 +1,45 @@
+docker run -d \
+ --name jellyfin \
+ --user 1000:1000 \
+ -p 8096:8096/tcp \
+ -p 7359:7359/udp \
+ --volume /opt/stacks/jellyfin/config:/config \
+ --volume /opt/stacks/jellyfin/cache:/cache \
+ --mount type=bind,source=/media/luckdantas/Novo\ volume/,target=/media1 \
+ --restart=unless-stopped \
+ jellyfin/jellyfin
+
+
+ docker compose up
+
+
+
+
+
+
+ services:
+  jellyfin:
+    image: jellyfin/jellyfin
+    container_name: jellyfin
+    # Optional - specify the uid and gid you would like Jellyfin to use instead of root
+    user: 1000:1000
+    ports:
+      - 8096:8096/tcp
+      - 7359:7359/udp
+    volumes:
+      - /opt/stacks/jellyfin/config:/config
+      - /opt/stacks/jellyfin/cache:/cache
+      - type: bind
+        source: /media/luckdantas/Novo\ volume/
+        target: /media1
+      - type: bind
+        source: /media/luckdantas/Jellyfin/Series/
+        target: /media2
+        read_only: true
+    restart: 'unless-stopped'
+    # Optional - alternative address used for autodiscovery
+    environment:
+      - JELLYFIN_PublishedServerUrl=http://192.168.1.100:8096
+    # Optional - may be necessary for docker healthcheck to pass if running in host network mode
+    extra_hosts:
+      - 'host.docker.internal:host-gateway'
