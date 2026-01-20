@@ -12,10 +12,16 @@
       #- /opt/stacks/jellyfin/cache:/cache
       - ./jellyfin-config:/config
       - ./jellyfin-cache:/cache
-      - ${MEDIA_LOCATION}:/media
+      - ${MEDIA_LOCATION}:/tv_show
+      - ${MEDIA_LOCATION2}:/movies
     restart: 'unless-stopped'
     # Optional - alternative address used for autodiscovery
     environment:
       - TZ=${TIMEZONE}
       - /dev/dri:/dev/dri
-    # Optional - may be necessary for docker healthcheck to pass if running in host network mode
+    #Optional - may be necessary for docker healthcheck to pass if running in host network mode
+    extra_hosts:
+      - 'host.docker.internal:host-gateway'
+    devices:
+      - /dev/dri/renderD128:/dev/dri/renderD128
+      - /dev/dri/card1:/dev/dri/card1 
